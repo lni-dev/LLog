@@ -1,7 +1,11 @@
-package me.linusdev.llog.arch.data;
+package me.linusdev.llog.base.data;
 
+import me.linusdev.llog.base.impl.StandardContentType;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @see StandardContentType
+ */
 public interface ContentType {
 
     /**

@@ -1,5 +1,6 @@
-package me.linusdev.llog.arch;
+package me.linusdev.llog.base.impl;
 
+import me.linusdev.llog.base.LogLevel;
 import org.jetbrains.annotations.NotNull;
 
 public enum StandardLogLevel implements LogLevel {

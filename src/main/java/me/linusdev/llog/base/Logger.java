@@ -1,6 +1,6 @@
-package me.linusdev.llog.arch;
+package me.linusdev.llog.base;
 
-import me.linusdev.llog.arch.data.LogData;
+import me.linusdev.llog.base.data.LogData;
 import org.jetbrains.annotations.NotNull;
 
 /**

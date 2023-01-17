@@ -1,5 +1,6 @@
-package me.linusdev.llog.arch;
+package me.linusdev.llog.base;
 
+import me.linusdev.llog.base.impl.StandardLogLevel;
 import org.jetbrains.annotations.NotNull;
 
 public interface LogLevel {

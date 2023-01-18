@@ -25,8 +25,19 @@ public interface LogData {
      */
     @NotNull String generateString() throws UnsupportedOperationException;
 
+    /**
+     * If this method returns {@code true}, {@link #generateBytes()} should never throw
+     * an exception.
+     * @return {@code false} if {@link #generateBytes()} will throw an {@link UnsupportedOperationException}, {@code true} otherwise.
+     */
     boolean canGenerateBytes();
 
+    /**
+     *
+     * @return {@link LogData} as byte array.
+     * @throws UnsupportedOperationException if this {@link LogData} cannot be converted to a byte array.
+     * @see #canGenerateBytes()
+     */
     byte @NotNull [] generateBytes()  throws UnsupportedOperationException;
 
 }

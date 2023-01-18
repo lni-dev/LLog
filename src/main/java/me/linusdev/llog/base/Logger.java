@@ -1,6 +1,7 @@
 package me.linusdev.llog.base;
 
 import me.linusdev.llog.base.data.LogData;
+import me.linusdev.llog.base.impl.TextLogData;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -9,11 +10,20 @@ import org.jetbrains.annotations.NotNull;
 public interface Logger {
 
     /**
-     *
+     * log given {@link LogData} on given {@link LogLevel}
      * @param logLevel {@link LogLevel}
      * @param data {@link LogData}
      */
     void log(@NotNull LogLevel logLevel, @NotNull LogData data);
+
+    /**
+     * log given {@code text} on given {@link LogLevel}
+     * @param logLevel {@link LogLevel}
+     * @param text text to log
+     */
+    default void log(@NotNull LogLevel logLevel, @NotNull String text) {
+        log(logLevel, new TextLogData(text));
+    }
 
     /**
      * Flushes the logger if possible.

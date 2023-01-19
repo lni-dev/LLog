@@ -8,6 +8,8 @@ public enum StandardContentType implements ContentType {
 
     TEXT_PLAIN_UTF_8("text", "plain", ContentTypeAttribute.of(ContentTypeAttribute.CHARSET_ATTRIBUTE_KEY, "utf-8")),
 
+    APPLICATION_JSON("application", "json"),
+
     ;
 
     private final @NotNull String topLevel;

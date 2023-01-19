@@ -1,6 +1,8 @@
 package me.linusdev.llog.base;
 
+import me.linusdev.data.so.SOData;
 import me.linusdev.llog.base.data.LogData;
+import me.linusdev.llog.base.impl.LogSOData;
 import me.linusdev.llog.base.impl.TextLogData;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,15 +16,24 @@ public interface Logger {
      * @param logLevel {@link LogLevel}
      * @param data {@link LogData}
      */
-    void log(@NotNull LogLevel logLevel, @NotNull LogData data);
+    void log(@NotNull LogLevel logLevel, @NotNull LogSource source, @NotNull LogData data);
 
     /**
      * log given {@code text} on given {@link LogLevel}
      * @param logLevel {@link LogLevel}
      * @param text text to log
      */
-    default void log(@NotNull LogLevel logLevel, @NotNull String text) {
-        log(logLevel, new TextLogData(text));
+    default void log(@NotNull LogLevel logLevel, @NotNull LogSource source, @NotNull String text) {
+        log(logLevel, source, new TextLogData(text));
+    }
+
+    /**
+     * log given {@link SOData} as json on given {@link LogLevel}.
+     * @param logLevel {@link LogLevel}
+     * @param data {@link SOData} to log
+     */
+    default void log(@NotNull LogLevel logLevel, @NotNull LogSource source, @NotNull SOData data) {
+        log(logLevel, source, new LogSOData(data));
     }
 
     /**
@@ -33,7 +44,7 @@ public interface Logger {
 
     /**
      * Whether this stream is flushable.
-     * @return {@code true} if {@link #flush()} will always return {@code false}.
+     * @return {@code false} if {@link #flush()} will always return {@code false}.
      */
     boolean isFlushable();
 

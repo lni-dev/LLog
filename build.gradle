@@ -5,7 +5,7 @@ plugins {
     id 'signing'
 }
 
-group = 'me.linusdev'
+group = 'de.linusdev'
 archivesBaseName = 'llog'
 version = '1.0.0'
 
@@ -41,7 +41,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.github.lni-dev:data:2.0.19'
+    api 'io.github.lni-dev:data:2.0.19'
     api 'org.jetbrains:annotations:23.0.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
@@ -93,8 +93,8 @@ publishing {
             pom {
                 name = 'llog'
                 description = 'A Logger'
-                url = 'https://lni-dev.github.io/'
-                groupId = 'io.github.lni-dev'
+                url = 'https://www.linusdev.de'
+                groupId = 'de.linusdev'
                 version = project.version
 
                 licenses {
@@ -107,8 +107,8 @@ publishing {
                     developer {
                         id = 'linusdev'
                         name = 'Linus Andera'
-                        email = 'einsuperlinus@gmail.com'
-                        organizationUrl = 'https://lni-dev.github.io/'
+                        email = 'linus@linusdev.de'
+                        organizationUrl = 'https://www.linusdev.de'
                     }
                 }
 

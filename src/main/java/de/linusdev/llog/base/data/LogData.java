@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023 Linus Andera all rights reserved
+ */
+
 package de.linusdev.llog.base.data;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,5 +43,19 @@ public interface LogData {
      * @see #canGenerateBytes()
      */
     byte @NotNull [] generateBytes()  throws UnsupportedOperationException;
+
+    /**
+     * if this method returns {@code true}, {@link #getCustomObject()} should not throw an exception.
+     * @return {@code false} if {@link #getCustomObject()} will throw an {@link UnsupportedOperationException}, {@code true} otherwise.
+     */
+    boolean hasCustomObject();
+
+    /**
+     *
+     * @return {@link LogData}s custom object. The type will be defined by the given {@link #getContentType() content type}.
+     * @throws UnsupportedOperationException if this {@link LogData} does not contain a custom Object.
+     * @see #hasCustomObject()
+     */
+    @NotNull Object getCustomObject();
 
 }

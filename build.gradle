@@ -25,7 +25,7 @@ java {
 javadoc {
     options.encoding = 'UTF-8'
     options.addStringOption('Xdoclint:none', '-quiet')
-    title = "LApi"
+    title = "LLog"
 
     configure(options) {
         tags(
@@ -41,6 +41,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'de.linusdev:lutils:1.0.1'
+
     api 'io.github.lni-dev:data:2.0.19'
     api 'org.jetbrains:annotations:23.0.0'
 
@@ -91,7 +93,7 @@ publishing {
             artifactId = 'llog'
             from components.java
             pom {
-                name = 'llog'
+                name = 'LLog'
                 description = 'A Logger'
                 url = 'https://www.linusdev.de'
                 groupId = 'de.linusdev'

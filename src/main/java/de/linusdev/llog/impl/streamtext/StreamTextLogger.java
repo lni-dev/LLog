@@ -1,5 +1,10 @@
+/*
+ * Copyright (c) 2023 Linus Andera all rights reserved
+ */
+
 package de.linusdev.llog.impl.streamtext;
 
+import de.linusdev.llog.impl.DefaultPropertyKeys;
 import de.linusdev.llog.replacer.LLogStringReplacer;
 import de.linusdev.llog.base.LogLevel;
 import de.linusdev.llog.base.LogSource;
@@ -21,27 +26,31 @@ import java.util.Properties;
 
 public class StreamTextLogger implements Logger {
 
+
+
     private final @NotNull DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
     private final @NotNull Writer writer;
     private final boolean autoFlush;
+    //TODO: private final boolean useANSIColors;
 
     private int minimumLogLevel;
 
+    @SuppressWarnings("unused")
     public static void adjustReplacer(@NotNull LLogStringReplacer replacer) {
 
     }
 
+    @SuppressWarnings("unused")
     public static @NotNull Logger create(@NotNull Properties properties) {
-        String logTo = properties.getProperty("logTo");
-        boolean autoFlush = properties.getProperty("autoFlush", "false").equalsIgnoreCase("true");
+        String logTo = properties.getProperty(DefaultPropertyKeys.LOG_TO_KEY);
+        boolean autoFlush = properties.getProperty(DefaultPropertyKeys.AUTO_FLUSH_KEY, "false").equalsIgnoreCase("true");
 
         if(logTo.equals("System.out")) {
             return new StreamTextLogger(System.out, StandardLogLevel.DEBUG.getLevel(), false, autoFlush);
         }
 
         Path path = Paths.get(logTo);
-        System.out.println("Creating " + StreamTextLogger.class.getSimpleName() + ". Logging to '" + path + "'.");
         try {
             Path parent = path.getParent();
             if(!Files.isDirectory(parent))

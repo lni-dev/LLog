@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023 Linus Andera all rights reserved
+ */
+
 package de.linusdev.llog;
 
 import de.linusdev.llog.base.LogInstance;

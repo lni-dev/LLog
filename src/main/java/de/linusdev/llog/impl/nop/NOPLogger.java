@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023 Linus Andera all rights reserved
+ */
+
 package de.linusdev.llog.impl.nop;
 
 import de.linusdev.llog.base.LogLevel;
@@ -13,6 +17,7 @@ import java.util.Properties;
  */
 public class NOPLogger implements Logger {
 
+    @SuppressWarnings("unused")
     public static @NotNull Logger create(@NotNull Properties properties) {
         return new NOPLogger();
     }

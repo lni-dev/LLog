@@ -1,23 +1,25 @@
-package de.linusdev.llog.base.impl;
+/*
+ * Copyright (c) 2023 Linus Andera all rights reserved
+ */
+
+package de.linusdev.llog.base.impl.data;
 
 import de.linusdev.llog.base.data.ContentType;
 import de.linusdev.llog.base.data.LogData;
-import me.linusdev.data.AbstractData;
-import me.linusdev.data.Datable;
-import me.linusdev.data.so.SOData;
+import de.linusdev.llog.base.impl.StandardContentType;
 import org.jetbrains.annotations.NotNull;
 
-public class LogSOData implements LogData, Datable {
+public class TextLogData implements LogData {
 
-    private final @NotNull SOData data;
+    private final @NotNull String text;
 
-    public LogSOData(@NotNull SOData data) {
-        this.data = data;
+    public TextLogData(@NotNull String text) {
+        this.text = text;
     }
 
     @Override
     public @NotNull ContentType getContentType() {
-        return StandardContentType.APPLICATION_JSON;
+        return StandardContentType.TEXT_PLAIN_UTF_8;
     }
 
     @Override
@@ -27,7 +29,7 @@ public class LogSOData implements LogData, Datable {
 
     @Override
     public @NotNull String generateString() throws UnsupportedOperationException {
-        return data.toJsonString().toString();
+        return text;
     }
 
     @Override
@@ -41,7 +43,12 @@ public class LogSOData implements LogData, Datable {
     }
 
     @Override
-    public AbstractData<?, ?> getData() {
-        return data;
+    public boolean hasCustomObject() {
+        return false;
+    }
+
+    @Override
+    public @NotNull Object getCustomObject() {
+        throw new UnsupportedOperationException();
     }
 }

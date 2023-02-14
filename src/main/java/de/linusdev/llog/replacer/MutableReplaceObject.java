@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023 Linus Andera all rights reserved
+ */
+
 package de.linusdev.llog.replacer;
 
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +20,7 @@ public class MutableReplaceObject implements ReplaceObject {
     }
 
 
+    @SuppressWarnings("UnusedReturnValue")
     public @NotNull MutableReplaceObject addObject(@NotNull String name, @NotNull ReplaceObject object) {
         objects.put(name, object);
         return this;

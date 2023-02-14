@@ -1,15 +1,34 @@
+/*
+ * Copyright (c) 2023 Linus Andera all rights reserved
+ */
+
 package de.linusdev.llog.base;
 
 import de.linusdev.llog.LLog;
+import de.linusdev.llog.impl.streamtext.StreamTextLogger;
 import me.linusdev.data.so.SOData;
 import de.linusdev.llog.base.data.LogData;
-import de.linusdev.llog.base.impl.LogSOData;
-import de.linusdev.llog.base.impl.TextLogData;
+import de.linusdev.llog.base.impl.data.LogSOData;
+import de.linusdev.llog.base.impl.data.TextLogData;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Logger specification
+ * <br><br>
+ * This interface must be implemented by all custom {@link Logger} implementation. An Example implementation
+ * is the {@link StreamTextLogger}.
+ * <br><br>
+ * Every {@link Logger} implementation must implement a {@code create} method. This method must be {@code static}.
+ * The exact syntax of the method must be:<br>
+ * <pre>{@code public static Logger create(Properties properties)}</pre>
+ * The {@code properties} parameter will never be {@code null} and the returned {@link Logger} must not be {@code null}.
+ * <br><br>
+ * Optionally every {@link Logger} implementation may implement a static {@code adjustReplacer} method.
+ * The exact syntax of this method must be:<br>
+ * <pre>{@code public static void adjustReplacer(LLogStringReplacer replacer)}</pre>
+ * The {@code replacer} parameter will never be {@code null}.
+ *
  */
 public interface Logger {
 

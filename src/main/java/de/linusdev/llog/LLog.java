@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023 Linus Andera all rights reserved
+ */
+
 package de.linusdev.llog;
 
 import de.linusdev.llog.impl.nop.NOPLogger;
@@ -16,10 +20,9 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Properties;
 
-public class LLog {
+import static de.linusdev.llog.impl.DefaultPropertyKeys.*;
 
-    public static final String LOGGER_KEY = "logger";
-    public static final String NO_INIT_KEY = "noInit";
+public class LLog {
 
     public static @NotNull Logger logger = new NOPLogger();
 

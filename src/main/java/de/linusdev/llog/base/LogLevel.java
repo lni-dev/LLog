@@ -5,7 +5,9 @@
 package de.linusdev.llog.base;
 
 import de.linusdev.llog.base.impl.StandardLogLevel;
+import de.linusdev.lutils.color.RGBAColor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface LogLevel {
 
@@ -35,5 +37,17 @@ public interface LogLevel {
      * @see Logger#setMinimumLogLevel(int) 
      */
     int getLevel();
+
+    default @Nullable RGBAColor getTextColor() {
+        return null;
+    }
+
+    default @Nullable RGBAColor getLevelNameColor() {
+        return null;
+    }
+
+    default @Nullable RGBAColor getSourceColor() {
+        return null;
+    }
 
 }

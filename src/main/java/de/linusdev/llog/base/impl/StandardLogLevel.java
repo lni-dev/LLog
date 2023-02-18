@@ -5,13 +5,43 @@
 package de.linusdev.llog.base.impl;
 
 import de.linusdev.llog.base.LogLevel;
+import de.linusdev.lutils.color.Color;
+import de.linusdev.lutils.color.RGBAColor;
 import org.jetbrains.annotations.NotNull;
 
 public enum StandardLogLevel implements LogLevel {
 
-    ERROR("Error", LogLevel.ERROR_NUMERICAL_LOG_LEVEL),
-    WARNING("Warning", 70),
-    INFO("Info", 20),
+    ERROR("Error", LogLevel.ERROR_NUMERICAL_LOG_LEVEL) {
+        @Override
+        public @NotNull RGBAColor getLevelNameColor() {
+            return Color.RED;
+        }
+
+        @Override
+        public @NotNull RGBAColor getTextColor() {
+            return Color.RED;
+        }
+    },
+
+    WARNING("Warning", 70) {
+        @Override
+        public @NotNull RGBAColor getLevelNameColor() {
+            return Color.ORANGE;
+        }
+
+        @Override
+        public @NotNull RGBAColor getTextColor() {
+            return Color.ORANGE;
+        }
+    },
+
+    INFO("Info", 20) {
+        @Override
+        public @NotNull RGBAColor getLevelNameColor() {
+            return Color.CYAN;
+        }
+    },
+
     DEBUG("Debug", 0),
     DEBUG_LOW("Debug Low", -5),
     DATA("Data", -10),

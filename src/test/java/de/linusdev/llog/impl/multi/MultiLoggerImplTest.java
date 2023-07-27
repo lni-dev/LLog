@@ -35,8 +35,8 @@ class MultiLoggerImplTest {
     public void test() {
         log.log(StandardLogLevel.INFO, "test1");
         log.log(StandardLogLevel.INFO, "test2");
-        log.log(StandardLogLevel.INFO, "test3");
-        log.logThrowable(new Exception("test :)"));
+        log.log(StandardLogLevel.INFO, "test3\ntest2");
+        log.logThrowable(new Exception("test :)\n wow"));
     }
 
 }

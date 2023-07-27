@@ -1,0 +1,8 @@
+#
+# Copyright (c) 2023 Linus Andera all rights reserved
+#
+
+logger=de.linusdev.llog.impl.streamtext.StreamTextLogger
+logTo={self.location.parent}/log/log.log
+
+# self.location is the location of the jar file. parent is the parent folder of that location

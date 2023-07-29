@@ -6,7 +6,7 @@ package de.linusdev.llog.base;
 
 import de.linusdev.llog.LLog;
 import de.linusdev.llog.impl.streamtext.StreamTextLogger;
-import me.linusdev.data.so.SOData;
+import de.linusdev.data.so.SOData;
 import de.linusdev.llog.base.data.LogData;
 import de.linusdev.llog.base.impl.data.LogSOData;
 import de.linusdev.llog.base.impl.data.TextLogData;

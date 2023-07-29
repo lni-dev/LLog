@@ -7,9 +7,9 @@ package de.linusdev.llog.base.impl.data;
 import de.linusdev.llog.base.data.ContentType;
 import de.linusdev.llog.base.data.LogData;
 import de.linusdev.llog.base.impl.StandardContentType;
-import me.linusdev.data.AbstractData;
-import me.linusdev.data.Datable;
-import me.linusdev.data.so.SOData;
+import de.linusdev.data.AbstractData;
+import de.linusdev.data.Datable;
+import de.linusdev.data.so.SOData;
 import org.jetbrains.annotations.NotNull;
 
 public class LogSOData implements LogData, Datable {

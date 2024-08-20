@@ -37,11 +37,12 @@ javadoc {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
-    implementation 'de.linusdev:lutils:1.0.13'
+    implementation 'de.linusdev:lutils:2.0.0'
 
     api 'de.linusdev:data:2.1.0'
     api 'org.jetbrains:annotations:24.0.1'

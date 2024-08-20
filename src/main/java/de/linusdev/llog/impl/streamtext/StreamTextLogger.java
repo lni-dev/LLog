@@ -45,9 +45,10 @@ public class StreamTextLogger implements Logger {
         String logTo = properties.getProperty(DefaultPropertyKeys.LOG_TO_KEY);
         boolean autoFlush = properties.getProperty(DefaultPropertyKeys.AUTO_FLUSH_KEY, "false").equalsIgnoreCase("true");
         boolean useAnsiColors = properties.getProperty(DefaultPropertyKeys.USE_ANSI_COLORS_KEY, "false").equalsIgnoreCase("true");
+        LogLevel minLogLevel = LogLevel.of(properties.getProperty(DefaultPropertyKeys.MIN_LOG_LEVEL_KEY, "" + StandardLogLevel.DEBUG.getLevel()));
 
         if(logTo.equals("System.out")) {
-            return new StreamTextLogger(System.out, StandardLogLevel.DEBUG.getLevel(), false, autoFlush, useAnsiColors);
+            return new StreamTextLogger(System.out, minLogLevel, false, autoFlush, useAnsiColors);
         }
 
         Path path = Paths.get(logTo);
@@ -56,7 +57,7 @@ public class StreamTextLogger implements Logger {
             if(!Files.isDirectory(parent))
                 Files.createDirectories(parent);
 
-            return new StreamTextLogger(Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), autoFlush, useAnsiColors);
+            return new StreamTextLogger(Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), minLogLevel, autoFlush, useAnsiColors);
         } catch (IOException e) {
             IllegalArgumentException ex = new IllegalArgumentException("StreamTextLogger: Cannot log to '" + path + "'.");
             //noinspection UnnecessaryInitCause
@@ -71,8 +72,8 @@ public class StreamTextLogger implements Logger {
      *
      * @param stream {@link OutputStream} to write to
      */
-    public StreamTextLogger(@NotNull OutputStream stream, boolean autoFlush, boolean useAnsiColors) {
-        this(stream, StandardLogLevel.DEBUG.getLevel(), true, autoFlush, useAnsiColors);
+    public StreamTextLogger(@NotNull OutputStream stream, @NotNull LogLevel minimumLogLevel, boolean autoFlush, boolean useAnsiColors) {
+        this(stream, minimumLogLevel, true, autoFlush, useAnsiColors);
     }
 
     /**
@@ -81,11 +82,11 @@ public class StreamTextLogger implements Logger {
      * @param minimumLogLevel The {@link Logger#setMinimumLogLevel(int)}
      * @param wrap {@code true} to wrap the {@link OutputStream} in a {@link BufferedWriter}.
      */
-    public StreamTextLogger(@NotNull OutputStream stream, int minimumLogLevel, boolean wrap, boolean autoFlush, boolean useAnsiColors) {
+    public StreamTextLogger(@NotNull OutputStream stream, @NotNull LogLevel minimumLogLevel, boolean wrap, boolean autoFlush, boolean useAnsiColors) {
         this.useAnsiColors = useAnsiColors;
         this.autoFlush = autoFlush;
         this.writer = wrap ? new BufferedWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8)) : new OutputStreamWriter(stream, StandardCharsets.UTF_8);
-        this.minimumLogLevel = minimumLogLevel;
+        this.minimumLogLevel = minimumLogLevel.getLevel();
     }
 
     @Override

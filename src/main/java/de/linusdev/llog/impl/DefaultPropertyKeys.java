@@ -17,5 +17,6 @@ public class DefaultPropertyKeys {
     public static final String LOGGER_KEY = "logger";
     public static final String NO_INIT_KEY = "noInit";
     public static final String LOG_TO_KEY = "logTo";
+    public static final String MIN_LOG_LEVEL_KEY = "minLogLevel";
 
 }

@@ -9,7 +9,34 @@ import de.linusdev.lutils.color.RGBAColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.regex.Pattern;
+
 public interface LogLevel {
+
+    /**
+     * If given {@code logLevel} is an integer, the returned {@link LogLevel} will have the
+     * name "Unknown".
+     * @param logLevel int number or any name of {@link StandardLogLevel}.
+     * @return given {@code logLevel} as {@link LogLevel}
+     */
+    static @NotNull LogLevel of(@NotNull String logLevel) {
+        if(Pattern.compile("^\\d+$").matcher(logLevel).find()) {
+            int level = Integer.parseInt(logLevel);
+            return new LogLevel() {
+                @Override
+                public @NotNull String getName() {
+                    return "Unknown";
+                }
+
+                @Override
+                public int getLevel() {
+                    return level;
+                }
+            };
+        }
+
+        return StandardLogLevel.ofName(logLevel);
+    }
 
     int ERROR_NUMERICAL_LOG_LEVEL = 100;
     int PRIVATE_DATA_NUMERICAL_LOG_LEVEL = -100;

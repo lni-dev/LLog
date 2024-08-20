@@ -7,6 +7,7 @@ package de.linusdev.llog.base.impl;
 import de.linusdev.llog.base.LogLevel;
 import de.linusdev.lutils.color.Color;
 import de.linusdev.lutils.color.RGBAColor;
+import de.linusdev.lutils.other.UnknownConstantException;
 import org.jetbrains.annotations.NotNull;
 
 public enum StandardLogLevel implements LogLevel {
@@ -50,6 +51,14 @@ public enum StandardLogLevel implements LogLevel {
 
     ;
 
+    public static @NotNull StandardLogLevel ofName(@NotNull String name) {
+        for (StandardLogLevel value : values()) {
+            if(value.getName().equals(name))
+                return value;
+        }
+
+        throw new UnknownConstantException(name);
+    }
 
     private final @NotNull String name;
     private final int level;

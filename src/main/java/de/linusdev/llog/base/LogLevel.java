@@ -20,7 +20,7 @@ public interface LogLevel {
      * @return given {@code logLevel} as {@link LogLevel}
      */
     static @NotNull LogLevel of(@NotNull String logLevel) {
-        if(Pattern.compile("^\\d+$").matcher(logLevel).find()) {
+        if(Pattern.compile("^-?\\d+$").matcher(logLevel).find()) {
             int level = Integer.parseInt(logLevel);
             return new LogLevel() {
                 @Override

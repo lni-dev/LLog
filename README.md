@@ -17,16 +17,22 @@ As you can see above, there are different properties, which can be set. Not ever
 - `autoFlush`: Some logger implementations may require to be flushed similar to jave output streams. If this property is set to `true`, those will automatically flush itself after every log operation. This may be required if it is possible for your application to fail ungracefully without flushing the `Logger` causing some log to be lost.
 - `minLogLevel`: May be set to the minimum log level, a log message must have to actually be logged. All log messages, whose log level is less than `minLogLevel` will be ignored. The value may be an integer or the name of a standard log level. See log level for more information.
 
-## Property Expansion
+## Property Expansion (ReplaceObjects)
 The values of properties are expanded before the logger is created. These expansions have the following syntax: {obj.obj}, {obj.value}, {obj.obj.value}, etc. Logger implementations may add their own expansion objects. The example `{self.location.parent}` expands to the directory in which the jar file of the currently running application is located.
 
 ### Current Objects
-- `self`: expands to none. Has the sub-objects:
-  * Path `location`: Jar path
+Current objects that can always be expanded to.
+Objects and sub-objects are declared like this: Type `name`: description.
+#### Object self`
+expands to none. Has the sub-objects:
+- LocationObject `location`: Jar path
 
 ### Current Object Types
-- Path: expands to the path it represents. Has sub-objects:
-  * Path `parent`: parent directory
+Current Types of objects. These are used in other objects. Sub-objects are declared like this: Type `name`: description.
+#### LocationObject
+expands to the path (file/dir) it represents.
+Has sub-objects:
+- LocationObject `parent`: parent directory
 
 ## Logger Implementations
 

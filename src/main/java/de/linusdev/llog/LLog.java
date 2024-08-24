@@ -22,6 +22,9 @@ import java.util.Properties;
 
 import static de.linusdev.llog.impl.DefaultPropertyKeys.*;
 
+/**
+ * For documentation about usage see <a href="https://github.com/lni-dev/LLog#LLog">github</a>.
+ */
 public class LLog {
 
     public static @NotNull Logger logger = new NOPLogger();

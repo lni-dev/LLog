@@ -45,8 +45,28 @@ public enum StandardLogLevel implements LogLevel {
 
     DEBUG("Debug", 0),
     DEBUG_LOW("Debug Low", -5),
-    DATA("Data", -10),
-    PRIVATE_DATA("Private Data", LogLevel.PRIVATE_DATA_NUMERICAL_LOG_LEVEL),
+    DATA("Data", -10) {
+        @Override
+        public @NotNull RGBAColor getTextColor() {
+            return Color.LIGHT_GRAY;
+        }
+
+        @Override
+        public @NotNull RGBAColor getLevelNameColor() {
+            return Color.LIGHT_GRAY;
+        }
+    },
+    PRIVATE_DATA("Private Data", LogLevel.PRIVATE_DATA_NUMERICAL_LOG_LEVEL) {
+        @Override
+        public @NotNull RGBAColor getTextColor() {
+            return Color.LIGHT_GRAY;
+        }
+
+        @Override
+        public @NotNull RGBAColor getLevelNameColor() {
+            return Color.LIGHT_GRAY;
+        }
+    },
 
 
     ;

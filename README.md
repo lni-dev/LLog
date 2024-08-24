@@ -70,7 +70,16 @@ logTo=testOutput/multi/log.log
 ```
 
 ## Log Level
-Each log level has a name and an integer value. If the value is smaller than the current minimum log level, its messages will be discarded. The default minimum log level is `Debug`.
+Each log level has a name and an integer value (its level). If the value is smaller than the current minimum log level, its messages will be discarded. The default minimum log level is `Debug`.
 
 ### Standard Log Level
-Todo: add table of standard log levels
+
+|     Name     | Level |   Color    |
+|:------------:|:-----:|:----------:|
+|    Error     |  100  |    Red     |
+|   Warning    |  70   |   Orange   |
+|     Info     |  20   |    Cyan    |
+|    Debug     |   0   |  Default   |
+|  Debug Low   |  -5   |  Default   |
+|     Data     |  -10  | Light Grey |
+| Private Data | -100  | Light Grey |

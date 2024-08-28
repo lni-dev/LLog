@@ -94,10 +94,11 @@ public class StreamTextLogger implements Logger {
         if(minimumLogLevel <= logLevel.getLevel()) {
             if(data.canGenerateString()) {
                 if(useAnsiColors) {
+                    String textColorSgr = logLevel.getTextColor() == null ? "" : logLevel.getTextColor().addToSgrAsForeground(new SGR()).construct();
                     log(
                             (logLevel.getLevelNameColor() == null ? "" : logLevel.getLevelNameColor().addToSgrAsForeground(new SGR()).construct()) + logLevel.getName() + SGR.reset(),
                             (logLevel.getSourceColor() == null ? "" : logLevel.getSourceColor().addToSgrAsForeground(new SGR()).construct()) + source.getName()  + SGR.reset(),
-                            (logLevel.getTextColor() == null ? "" : logLevel.getTextColor().addToSgrAsForeground(new SGR()).construct()) + data.generateString()  + SGR.reset()
+                             textColorSgr + data.generateString().replaceAll("\n", "\n"+ textColorSgr) + SGR.reset()
                     );
                 } else {
                     log(logLevel.getName(), source.getName(), data.generateString());

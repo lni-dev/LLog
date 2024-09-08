@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2024 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.base.data;
@@ -19,7 +19,9 @@ public interface LogData {
      * an exception.
      * @return {@code false} if {@link #generateString()} will throw an {@link UnsupportedOperationException}, {@code true} otherwise.
      */
-    boolean canGenerateString();
+    default boolean canGenerateString() {
+        return false;
+    }
 
     /**
      *
@@ -27,14 +29,18 @@ public interface LogData {
      * @throws UnsupportedOperationException if this {@link LogData} cannot be converted to a String.
      * @see #canGenerateString()
      */
-    @NotNull String generateString() throws UnsupportedOperationException;
+    default @NotNull String generateString() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * If this method returns {@code true}, {@link #generateBytes()} should never throw
      * an exception.
      * @return {@code false} if {@link #generateBytes()} will throw an {@link UnsupportedOperationException}, {@code true} otherwise.
      */
-    boolean canGenerateBytes();
+    default boolean canGenerateBytes() {
+        return false;
+    }
 
     /**
      *
@@ -42,13 +48,17 @@ public interface LogData {
      * @throws UnsupportedOperationException if this {@link LogData} cannot be converted to a byte array.
      * @see #canGenerateBytes()
      */
-    byte @NotNull [] generateBytes()  throws UnsupportedOperationException;
+    default byte @NotNull [] generateBytes()  throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * if this method returns {@code true}, {@link #getCustomObject()} should not throw an exception.
      * @return {@code false} if {@link #getCustomObject()} will throw an {@link UnsupportedOperationException}, {@code true} otherwise.
      */
-    boolean hasCustomObject();
+    default boolean hasCustomObject() {
+        return false;
+    }
 
     /**
      *
@@ -56,6 +66,8 @@ public interface LogData {
      * @throws UnsupportedOperationException if this {@link LogData} does not contain a custom Object.
      * @see #hasCustomObject()
      */
-    @NotNull Object getCustomObject();
+    default @NotNull Object getCustomObject() {
+        throw new UnsupportedOperationException();
+    }
 
 }

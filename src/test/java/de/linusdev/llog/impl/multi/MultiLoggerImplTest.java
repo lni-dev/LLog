@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2024 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.impl.multi;
@@ -11,8 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class MultiLoggerImplTest {
 
@@ -36,7 +34,7 @@ class MultiLoggerImplTest {
         log.log(StandardLogLevel.INFO, "test1");
         log.log(StandardLogLevel.INFO, "test2");
         log.log(StandardLogLevel.INFO, "test3\ntest2");
-        log.logThrowable(new Exception("test :)\n wow"));
+        log.throwable(new Exception("test :)\n wow"));
     }
 
 }

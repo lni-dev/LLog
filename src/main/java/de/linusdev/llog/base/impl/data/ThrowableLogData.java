@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2024 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.base.impl.data;
@@ -37,16 +37,6 @@ public class ThrowableLogData implements LogData {
         PrintWriter writer = new PrintWriter(string);
         throwable.printStackTrace(writer);
         return string.toString();
-    }
-
-    @Override
-    public boolean canGenerateBytes() {
-        return false;
-    }
-
-    @Override
-    public byte @NotNull [] generateBytes() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
     }
 
     @Override

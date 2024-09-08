@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023-2024 Linus Andera all rights reserved
+ * Copyright (c) 2024 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.base.impl.data;
@@ -9,12 +9,14 @@ import de.linusdev.llog.base.data.LogData;
 import de.linusdev.llog.base.impl.StandardContentType;
 import org.jetbrains.annotations.NotNull;
 
-public class TextLogData implements LogData {
+import java.util.function.Supplier;
 
-    private final @NotNull String text;
+public class TextSupplierLogData implements LogData {
 
-    public TextLogData(@NotNull String text) {
-        this.text = text;
+    private final @NotNull Supplier<@NotNull String> supplier;
+
+    public TextSupplierLogData(@NotNull Supplier<@NotNull String> supplier) {
+        this.supplier = supplier;
     }
 
     @Override
@@ -29,7 +31,6 @@ public class TextLogData implements LogData {
 
     @Override
     public @NotNull String generateString() throws UnsupportedOperationException {
-        return text;
+        return supplier.get();
     }
-
 }

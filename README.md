@@ -83,3 +83,10 @@ Each log level has a name and an integer value (its level). If the value is smal
 |  Debug Low   |  -5   |  Default   |
 |     Data     |  -10  | Light Grey |
 | Private Data | -100  | Light Grey |
+
+## Todo List
+- Localhost logger: Logger that logs to a website hosted on localhost.
+- StringReplacer: In llog.properties file add string replacer for current time/date, to allow changing file names
+  of the log file.
+- StreamingTextLogger: Allow logging to custom output streams (currently on System.out is supported). This would also be great for writing better/automatic tests.
+- Tests: Better/automatic/more tests.

@@ -69,6 +69,7 @@ If set to `true` the Logger will add ANSI color codes to its output, making the 
 ### MultiLogger
 This implementation allows to log to multiple `Logger` instances. For example logging to two StreamTextLogger. One logging to `System.out` and the other one to a log file. The only possible property is `sub-logger-x`. `x` must be replaced with the number of the next logger starting at `1`. The value of this property points to another properties file, which contains the properties for this sub-logger. Example:
 ```properties
+logger=de.linusdev.llog.impl.multi.MultiLoggerImpl
 sub-logger-1=llog/multi/sysout.properties
 sub-logger-2=llog/multi/file.properties
 ```

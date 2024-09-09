@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2024 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog;
@@ -16,7 +16,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LLogTest {
 
@@ -25,13 +26,12 @@ class LLogTest {
         Properties properties = new Properties();
 
         properties.put("logger", "de.linusdev.llog.impl.streamtext.StreamTextLogger");
-        properties.put("logTo", "testOutput/log.log");
+        properties.put("logTo", "testOutput/log-{datetime}.log");
 
         LLog.init(properties);
         LogInstance log = LLog.getLogInstance("TestSource", null);
         log.log(StandardLogLevel.INFO, "Test");
         log.flush();
-
 
         Path logFile = Paths.get(properties.getProperty("logTo"));
         String content = Files.readString(logFile).replace(System.lineSeparator(), "");
@@ -40,6 +40,8 @@ class LLogTest {
         assertTrue(matcher.find());
         assertEquals(0, matcher.start());
         assertEquals(matcher.end(), content.length());
+
+        Files.delete(logFile);
     }
 
 }

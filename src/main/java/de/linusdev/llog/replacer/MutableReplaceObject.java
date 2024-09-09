@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2024 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.replacer;
@@ -40,5 +40,10 @@ public class MutableReplaceObject implements ReplaceObject {
     @Override
     public @Nullable String getProperty(@NotNull String name) {
         return properties.get(name);
+    }
+
+    @Override
+    public String toString() {
+        return "obj";
     }
 }

@@ -1,16 +1,19 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2024 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.replacer;
 
 import de.linusdev.llog.LLog;
+import de.linusdev.llog.replacer.datetime.DateTimeObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -32,10 +35,10 @@ public class LLogStringReplacer implements ReplaceObject {
             System.err.println("llog: Cannot get jar path.");
         }
 
-        LocationObject location = new LocationObject(path);
-        self.addObject("location", location);
+        self.addObject("location", new LocationObject(path));
 
-        this.objects.put("self", self);
+        addObject("self", self);
+        addObject("datetime", new DateTimeObject(LocalDateTime.now(ZoneId.systemDefault())));
     }
 
     public @NotNull String process(@NotNull String input) {
@@ -72,8 +75,8 @@ public class LLogStringReplacer implements ReplaceObject {
                 value = current.getProperty(name);
                 current = null;
             } else {
-                value = current.toString();
                 current = object;
+                value = current.toString();
             }
         }
 
@@ -85,6 +88,7 @@ public class LLogStringReplacer implements ReplaceObject {
         return this.objects.get(name);
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public @Nullable LLogStringReplacer addObject(@NotNull String name, @NotNull ReplaceObject object) {
         objects.put(name, object);
         return this;

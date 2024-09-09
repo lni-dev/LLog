@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2024 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.impl.streamtext;
@@ -15,6 +15,8 @@ import de.linusdev.lutils.ansi.sgr.SGR;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,6 +26,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StreamTextLogger implements Logger {
 
@@ -40,6 +44,8 @@ public class StreamTextLogger implements Logger {
 
     }
 
+    private static final @NotNull Pattern LOG_TO_STREAM_PATTERN = Pattern.compile("^OutputStream:(?<qualifiedClassName>([^/]+\\.)*[^/]+)\\.(?<variable>[^/]+)$");
+
     @SuppressWarnings("unused")
     public static @NotNull Logger create(@NotNull Properties properties) {
         String logTo = properties.getProperty(DefaultPropertyKeys.LOG_TO_KEY);
@@ -47,9 +53,30 @@ public class StreamTextLogger implements Logger {
         boolean useAnsiColors = properties.getProperty(DefaultPropertyKeys.USE_ANSI_COLORS_KEY, "false").equalsIgnoreCase("true");
         LogLevel minLogLevel = LogLevel.of(properties.getProperty(DefaultPropertyKeys.MIN_LOG_LEVEL_KEY, "" + StandardLogLevel.DEBUG.getLevel()));
 
-        if(logTo.equals("System.out")) {
-            return new StreamTextLogger(System.out, minLogLevel, false, autoFlush, useAnsiColors);
+        Matcher matcher = LOG_TO_STREAM_PATTERN.matcher(logTo);
+
+        if(matcher.find()) {
+            String qualifiedClassName = matcher.group("qualifiedClassName");
+            String varName = matcher.group("variable");
+
+            try {
+                Class<?> clazz = Class.forName(qualifiedClassName);
+                Field field = clazz.getField(varName);
+
+                if(!Modifier.isStatic(field.getModifiers()))
+                    throw new IllegalArgumentException("Variable '" + qualifiedClassName + "." + varName + "' is not static.");
+
+                if(!OutputStream.class.isAssignableFrom(field.getType()))
+                    throw new IllegalArgumentException("Variable '" + qualifiedClassName + "." + varName + "' is no subclass of OutputStream.");
+
+
+                return new StreamTextLogger((OutputStream) field.get(null), minLogLevel, false, autoFlush, useAnsiColors);
+
+            } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+                throw new IllegalArgumentException("Cannot create OutputStream logger with stream in '" + qualifiedClassName + "." + varName + "'.", e);
+            }
         }
+
 
         Path path = Paths.get(logTo);
         try {

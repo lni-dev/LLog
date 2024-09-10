@@ -105,3 +105,4 @@ Each log level has a name and an integer value (its level). If the value is smal
 - Localhost logger: Logger that logs to a website hosted on localhost.
 - Tests: Better/automatic/more tests.
 - Custom log format
+- Register a Java Logger to redirect it to LLog

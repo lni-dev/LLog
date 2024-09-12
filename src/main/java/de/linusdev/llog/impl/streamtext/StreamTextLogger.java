@@ -81,7 +81,7 @@ public class StreamTextLogger implements Logger {
         Path path = Paths.get(logTo);
         try {
             Path parent = path.getParent();
-            if(!Files.isDirectory(parent))
+            if(parent != null && !Files.isDirectory(parent))
                 Files.createDirectories(parent);
 
             return new StreamTextLogger(Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), minLogLevel, autoFlush, useAnsiColors);

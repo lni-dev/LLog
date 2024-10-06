@@ -5,18 +5,16 @@
 package de.linusdev.llog.impl.localhost;
 
 import de.linusdev.llog.LLog;
-import de.linusdev.lutils.http.HTTPResponse;
-import de.linusdev.lutils.http.body.Bodies;
-import de.linusdev.lutils.http.status.StatusCodes;
-import de.linusdev.lutils.routing.RequestHandler;
-import de.linusdev.lutils.routing.Routing;
+import de.linusdev.lutils.net.http.HTTPResponse;
+import de.linusdev.lutils.net.http.body.Bodies;
+import de.linusdev.lutils.net.http.status.StatusCodes;
+import de.linusdev.lutils.net.routing.RequestHandler;
+import de.linusdev.lutils.net.routing.Routing;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.http.HttpResponse;
 
 import static de.linusdev.llog.impl.localhost.LocalhostLoggerImpl.WEBSITE_PREFIX;
 
@@ -62,8 +60,8 @@ public class LLRequestHandler extends Thread {
     @Override
     public void run() {
         while (!shutdown) {
-            try(var socket = server.accept()) {
-                routing.route(socket.getInputStream()).buildResponse(socket.getOutputStream());
+            try {
+                routing.route(server.accept());
             } catch (Throwable e) {
                 LLog.getLogInstance().throwable(e);
             }

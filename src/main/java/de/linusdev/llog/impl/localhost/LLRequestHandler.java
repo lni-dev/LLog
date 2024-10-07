@@ -5,16 +5,15 @@
 package de.linusdev.llog.impl.localhost;
 
 import de.linusdev.llog.LLog;
-import de.linusdev.lutils.net.http.HTTPResponse;
-import de.linusdev.lutils.net.http.body.Bodies;
-import de.linusdev.lutils.net.http.status.StatusCodes;
 import de.linusdev.lutils.net.routing.RequestHandler;
 import de.linusdev.lutils.net.routing.Routing;
+import de.linusdev.lutils.net.ws.WebSocketServer;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.security.NoSuchAlgorithmException;
 
 import static de.linusdev.llog.impl.localhost.LocalhostLoggerImpl.WEBSITE_PREFIX;
 
@@ -24,7 +23,7 @@ public class LLRequestHandler extends Thread {
 
     volatile boolean shutdown = false;
 
-    public LLRequestHandler(int port, @NotNull InetAddress address, int websocketPort) throws IOException {
+    public LLRequestHandler(int port, @NotNull InetAddress address, LLWebsocket llWebsocket) throws IOException, NoSuchAlgorithmException {
         super("llog-localhost-logger-request-handler");
         System.out.println("LocalhostLogger: Serving site at http://" + address.getHostName() + ":" + port + "/" + WEBSITE_PREFIX);
         this.server = new ServerSocket(port, 3, address);
@@ -38,11 +37,7 @@ public class LLRequestHandler extends Thread {
                 .route("index.js")
                     .GET(RequestHandler.ofJsResource(LocalhostLoggerImpl.class, "index.js")).buildRoute()
                 .route("websocket")
-                    .GET(httpRequest -> HTTPResponse
-                            .builder()
-                            .setStatusCode(StatusCodes.OK)
-                            .setBody(Bodies.textUtf8().ofStringUtf8("" + websocketPort))
-                    ).buildRoute()
+                    .GET(new WebSocketServer(llWebsocket::addConnection)).buildRoute()
                 .build();
 
         setDaemon(true);

@@ -16,14 +16,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
 
 public class LocalhostLoggerImpl implements Logger {
-
-    public static final @NotNull String LOG_SITE_PORT_KEY = "site-port";
-    public static final @NotNull String LOG_WEBSOCKET_KEY = "websocket-port";
 
     public static final @NotNull String WEBSITE_PREFIX = "llog";
 
@@ -33,20 +31,15 @@ public class LocalhostLoggerImpl implements Logger {
     }
 
     @SuppressWarnings("unused")
-    public static @NotNull Logger create(@NotNull Properties properties) throws IOException {
-        String sitePort = properties.getProperty(LOG_SITE_PORT_KEY);
-        String webSocketPort = properties.getProperty(LOG_WEBSOCKET_KEY, "8081");
+    public static @NotNull Logger create(@NotNull Properties properties) throws IOException, NoSuchAlgorithmException {
+        String sitePort = properties.getProperty(DefaultPropertyKeys.LOG_TO_KEY);
         LogLevel minLogLevel = LogLevel.of(properties.getProperty(DefaultPropertyKeys.MIN_LOG_LEVEL_KEY, "" + StandardLogLevel.DEBUG.getLevel()));
 
         if(sitePort != null && !Pattern.compile("^\\d+$").matcher(sitePort).find())
-            throw new IllegalArgumentException("Property '" + LOG_SITE_PORT_KEY + "' must be a valid port number, but was '" + sitePort + "'.");
-
-        if(!Pattern.compile("^\\d+$").matcher(webSocketPort).find())
-            throw new IllegalArgumentException("Property '" + LOG_WEBSOCKET_KEY + "' must be a valid port number, but was '" + webSocketPort + "'.");
+            throw new IllegalArgumentException("Property '" + DefaultPropertyKeys.LOG_TO_KEY + "' must be a valid port number, but was '" + sitePort + "'.");
 
         return new LocalhostLoggerImpl(
                 sitePort == null ? -1 : Integer.parseInt(sitePort),
-                Integer.parseInt(webSocketPort),
                 minLogLevel
         );
     }
@@ -55,14 +48,14 @@ public class LocalhostLoggerImpl implements Logger {
     private final @NotNull LLWebsocket websocket;
     private int minimumLogLevel;
 
-    public LocalhostLoggerImpl(int sitePort, int websocketPort, @NotNull LogLevel minimumLogLevel) throws IOException {
+    public LocalhostLoggerImpl(int sitePort, @NotNull LogLevel minimumLogLevel) throws IOException, NoSuchAlgorithmException {
         setMinimumLogLevel(minimumLogLevel);
 
-        websocket = new LLWebsocket(websocketPort, InetAddress.getLoopbackAddress());
+        websocket = new LLWebsocket();
         websocket.start();
 
         if(sitePort != -1) {
-            requestHandler = new LLRequestHandler(sitePort, InetAddress.getLoopbackAddress(), websocketPort);
+            requestHandler = new LLRequestHandler(sitePort, InetAddress.getLoopbackAddress(), websocket);
             requestHandler.start();
         }else {
             requestHandler = null;

@@ -1,11 +1,7 @@
 window.addEventListener('load', function () {
 
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", window.location.origin + "/llog/websocket", false ); // false for synchronous request
-    xmlHttp.send( null );
-
     // Create WebSocket connection.
-    const socket = new WebSocket("ws://localhost:" + xmlHttp.responseText);
+    const socket = new WebSocket("ws://" + window.location.host + "/llog/websocket");
 
     // Connection opened
     socket.addEventListener("open", (event) => {

@@ -5,7 +5,7 @@ LLog is a logging library used by my other projects.
 First a java resource file named `llog.properties` in the folder llog is required. This file contains properties about the logger implemantion, which should be used for logging:
 ```properties
 logger=de.linusdev.llog.impl.streamtext.StreamTextLogger
-logTo=System.out
+logTo=OutputStream:java.lang.System.out
 autoFlush=true
 minLogLevel=-100
 ```

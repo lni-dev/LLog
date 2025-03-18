@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 Linus Andera all rights reserved
+ */
+
 plugins {
     id 'java'
     id 'maven-publish'
@@ -7,7 +11,7 @@ plugins {
 
 group = 'de.linusdev'
 archivesBaseName = 'llog'
-version = '1.0.2'
+version = '1.0.3'
 
 targetCompatibility = JavaVersion.VERSION_17
 sourceCompatibility = JavaVersion.VERSION_17
@@ -58,15 +62,15 @@ test {
 publishing {
     repositories {
         maven {
-            if(project.hasProperty("ossrhUsername") && project.hasProperty("ossrhPassword")){
+            if(project.hasProperty("ossrhTokenUserName") && project.hasProperty("ossrhTokenPassword")){
                 name = "OSSRH"
                 def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
                 def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
                 url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
 
                 credentials {
-                    username = ossrhUsername
-                    password = ossrhPassword
+                    username = ossrhTokenUserName
+                    password = ossrhTokenPassword
                 }
 
             }else {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023-2024 Linus Andera all rights reserved
+ * Copyright (c) 2023-2025 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.impl.localhost;
@@ -20,7 +20,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
-
+@Deprecated
 public class LocalhostLoggerImpl implements Logger {
 
     public static final @NotNull String WEBSITE_PREFIX = "llog";

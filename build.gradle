@@ -46,7 +46,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'de.linusdev:lutils:2.0.0'
+    implementation 'de.linusdev:lutils:2.0.1'
 
     api 'de.linusdev:data:2.1.0'
     api 'org.jetbrains:annotations:24.0.1'

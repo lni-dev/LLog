@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2024 Linus Andera all rights reserved
+ * Copyright (c) 2024-2025 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.impl.localhost;
 
 import de.linusdev.llog.LLog;
-import de.linusdev.lutils.llist.LLinkedList;
+import de.linusdev.lutils.collections.llist.LLinkedList;
 import de.linusdev.lutils.net.ws.WebSocket;
 import org.jetbrains.annotations.NotNull;
 

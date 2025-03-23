@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2025 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.impl.multi;
@@ -10,7 +10,7 @@ import de.linusdev.llog.base.LogSource;
 import de.linusdev.llog.base.Logger;
 import de.linusdev.llog.base.data.LogData;
 import de.linusdev.llog.replacer.LLogStringReplacer;
-import de.linusdev.lutils.llist.LLinkedList;
+import de.linusdev.lutils.collections.llist.LLinkedList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

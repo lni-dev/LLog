@@ -39,7 +39,7 @@ public class LLog {
     public static final @NotNull StackWalker STACK_WALKER = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
 
     /**
-     * Creates a new {@link LogInstance}, which logs the content of given {@code reader} in a new {@link Thread}.
+     * Creates a new {@link LogInstance}, which logs the content of given {@code reader} in a new daemon {@link Thread}.
      * The thread will automatically stop once {@code reader} has no more content ({@code reader.readLine()} returns {@code null}).
      * @param source {@link LogInstance} source
      * @param information {@link LogInstance} information
@@ -53,7 +53,7 @@ public class LLog {
             @NotNull BufferedReader reader,
             @NotNull LogLevel logLevel
     ) {
-        new Thread(() -> {
+        Thread thread = new Thread(() -> {
             LogInstance log = getLogInstance(source, information);
             try {
                 String line;
@@ -63,7 +63,10 @@ public class LLog {
             } catch (Throwable e) {
                 log.throwable(e);
             }
-        }).start();
+        });
+
+        thread.setDaemon(true);
+        thread.start();
     }
 
     /**

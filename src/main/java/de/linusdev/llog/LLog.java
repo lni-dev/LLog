@@ -1,18 +1,20 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2025 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog;
 
-import de.linusdev.llog.impl.nop.NOPLogger;
-import de.linusdev.llog.replacer.LLogStringReplacer;
 import de.linusdev.llog.base.LogInstance;
+import de.linusdev.llog.base.LogLevel;
 import de.linusdev.llog.base.LogSource;
 import de.linusdev.llog.base.Logger;
 import de.linusdev.llog.base.impl.StandardLogInstance;
+import de.linusdev.llog.impl.nop.NOPLogger;
+import de.linusdev.llog.replacer.LLogStringReplacer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,7 +22,8 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Properties;
 
-import static de.linusdev.llog.impl.DefaultPropertyKeys.*;
+import static de.linusdev.llog.impl.DefaultPropertyKeys.LOGGER_KEY;
+import static de.linusdev.llog.impl.DefaultPropertyKeys.NO_INIT_KEY;
 
 /**
  * For documentation about usage see <a href="https://github.com/lni-dev/LLog#LLog">github</a>.
@@ -34,6 +37,33 @@ public class LLog {
     }
 
     public static final @NotNull StackWalker STACK_WALKER = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
+
+    /**
+     * Creates a new {@link LogInstance}, which logs the content of given {@code reader} in a new {@link Thread}.
+     * @param source {@link LogInstance} source
+     * @param information {@link LogInstance} information
+     * @param reader the reader whose content should be logged.
+     * @param logLevel the log level to log to
+     */
+    @SuppressWarnings("unused")
+    public static void createAsyncLogger(
+            @NotNull String source,
+            @Nullable Map<String, String> information,
+            @NotNull BufferedReader reader,
+            @NotNull LogLevel logLevel
+    ) {
+        new Thread(() -> {
+            LogInstance log = getLogInstance(source, information);
+            try {
+                String line;
+                while((line = reader.readLine()) != null) {
+                    log.log(logLevel, line);
+                }
+            } catch (Throwable e) {
+                log.throwable(e);
+            }
+        }).start();
+    }
 
     /**
      * Creates a new {@link LogInstance} for the calling class.

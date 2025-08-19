@@ -40,6 +40,7 @@ public class LLog {
 
     /**
      * Creates a new {@link LogInstance}, which logs the content of given {@code reader} in a new {@link Thread}.
+     * The thread will automatically stop once {@code reader} has no more content ({@code reader.readLine()} returns {@code null}).
      * @param source {@link LogInstance} source
      * @param information {@link LogInstance} information
      * @param reader the reader whose content should be logged.

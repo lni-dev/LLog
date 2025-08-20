@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
@@ -28,6 +29,7 @@ import static de.linusdev.llog.impl.DefaultPropertyKeys.NO_INIT_KEY;
 /**
  * For documentation about usage see <a href="https://github.com/lni-dev/LLog#LLog">github</a>.
  */
+@SuppressWarnings("CallToPrintStackTrace")
 public class LLog {
 
     public static @NotNull Logger logger = new NOPLogger();
@@ -63,7 +65,7 @@ public class LLog {
             } catch (Throwable e) {
                 log.throwable(e);
             }
-        });
+        }, "async-logger-" + source.toLowerCase(Locale.ROOT).replace('_', '-'));
 
         thread.setDaemon(true);
         thread.start();

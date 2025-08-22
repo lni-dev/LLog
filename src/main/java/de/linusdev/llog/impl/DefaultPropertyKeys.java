@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2025 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.impl;
@@ -18,5 +18,6 @@ public class DefaultPropertyKeys {
     public static final String NO_INIT_KEY = "noInit";
     public static final String LOG_TO_KEY = "logTo";
     public static final String MIN_LOG_LEVEL_KEY = "minLogLevel";
+    public static final String REDIRECT_JAVA_UTIL_LOGGING_TO_LLOG = "redirectJavaUtilLoggingToLLog";
 
 }

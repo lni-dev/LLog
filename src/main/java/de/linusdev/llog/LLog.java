@@ -9,7 +9,9 @@ import de.linusdev.llog.base.LogLevel;
 import de.linusdev.llog.base.LogSource;
 import de.linusdev.llog.base.Logger;
 import de.linusdev.llog.base.impl.StandardLogInstance;
+import de.linusdev.llog.base.impl.StandardLogLevel;
 import de.linusdev.llog.impl.nop.NOPLogger;
+import de.linusdev.llog.java.LLogHandler;
 import de.linusdev.llog.replacer.LLogStringReplacer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,9 +24,11 @@ import java.lang.reflect.Modifier;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
 
-import static de.linusdev.llog.impl.DefaultPropertyKeys.LOGGER_KEY;
-import static de.linusdev.llog.impl.DefaultPropertyKeys.NO_INIT_KEY;
+import static de.linusdev.llog.impl.DefaultPropertyKeys.*;
 
 /**
  * For documentation about usage see <a href="https://github.com/lni-dev/LLog#LLog">github</a>.
@@ -128,9 +132,35 @@ public class LLog {
         return (Logger) createMethod.invoke(null, properties);
     }
 
+    private static void redirectJavaUtilLogging() {
+        java.util.logging.Logger rootLogger = LogManager.getLogManager().getLogger("");
+
+        if(rootLogger == null) {
+            logger.log(
+                    StandardLogLevel.ERROR,
+                    LogSource.of("LLog"),
+                    "Cannot redirect java.util.logging to LLog because java.util.logging root logger does not exist."
+            );
+            return;
+        }
+
+        for (Handler h : rootLogger.getHandlers()) {
+            rootLogger.removeHandler(h);
+        }
+
+        rootLogger.addHandler(new LLogHandler());
+        rootLogger.setLevel(Level.ALL);
+    }
+
     public static void init(@NotNull Properties properties) {
         try {
             String logger = (String) properties.get(LOGGER_KEY);
+
+            if(logger == null) {
+                System.err.println("llog.properties missing '" + LOGGER_KEY + "' key! Please read the documentation on github!");
+                return;
+            }
+
             //shutdown the old logger
             LLog.logger.shutdown();
             //create new logger
@@ -138,6 +168,14 @@ public class LLog {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Cannot start logger: " + e.getClass().getSimpleName() + ": " + e.getMessage() + ". Defaulting to NOP logger");
+            logger = new NOPLogger();
+            return;
+        }
+
+        // Check if java.utils.logging should be redirected to LLog
+        String redirect = properties.getProperty(REDIRECT_JAVA_UTIL_LOGGING_TO_LLOG, "false");
+        if(redirect.equalsIgnoreCase("true")) {
+            redirectJavaUtilLogging();
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

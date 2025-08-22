@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2025 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.base.impl;
@@ -43,8 +43,8 @@ public enum StandardLogLevel implements LogLevel {
         }
     },
 
-    DEBUG("Debug", 0),
-    DEBUG_LOW("Debug Low", -5),
+    DEBUG("Debug", DEBUG_NUMERICAL_LOG_LEVEL),
+    DEBUG_LOW("Debug Low", DEBUG_LOW_NUMERICAL_LOG_LEVEL),
     DATA("Data", -10) {
         @Override
         public @NotNull RGBAColor getTextColor() {
@@ -68,7 +68,14 @@ public enum StandardLogLevel implements LogLevel {
         }
     },
 
-
+    /**
+     * Should never be logged.
+     */
+    OFF("OFF", Integer.MIN_VALUE),
+    /**
+     * Should always be logged.
+     */
+    ALL("ALL", Integer.MAX_VALUE),
     ;
 
     public static @NotNull StandardLogLevel ofName(@NotNull String name) {
@@ -96,5 +103,10 @@ public enum StandardLogLevel implements LogLevel {
     @Override
     public int getLevel() {
         return level;
+    }
+
+    @Override
+    public String toString() {
+        return LogLevel.toString(this);
     }
 }

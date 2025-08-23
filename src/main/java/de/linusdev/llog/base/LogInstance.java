@@ -12,6 +12,7 @@ import de.linusdev.llog.base.impl.data.TextLogData;
 import de.linusdev.llog.base.impl.data.TextSupplierLogData;
 import de.linusdev.llog.base.impl.data.ThrowableLogData;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
@@ -132,6 +133,13 @@ public interface LogInstance extends LogSource {
      */
     default void throwable(@NotNull Throwable throwable) {
         log(StandardLogLevel.ERROR, new ThrowableLogData(throwable));
+    }
+
+    /**
+     * Logs a {@link ThrowableLogData} with given {@code message} and {@code throwable} and log level {@link StandardLogLevel#ERROR ERROR}.
+     */
+    default void throwable(@Nullable String message, @NotNull Throwable throwable) {
+        log(StandardLogLevel.ERROR, new ThrowableLogData(message, throwable));
     }
 
     /**

@@ -31,11 +31,12 @@ import java.util.regex.Pattern;
 
 public class StreamTextLogger implements Logger {
 
-    private final static @NotNull DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    private final static @NotNull String DEFAULT_DATE_FORMAT = "dd.MM.yyyy HH:mm";
 
     private final @NotNull Writer writer;
     private final boolean autoFlush;
     private final boolean useAnsiColors;
+    private final @NotNull DateFormat dateFormat;
 
     private int minimumLogLevel;
 
@@ -52,6 +53,7 @@ public class StreamTextLogger implements Logger {
         boolean autoFlush = properties.getProperty(DefaultPropertyKeys.AUTO_FLUSH_KEY, "false").equalsIgnoreCase("true");
         boolean useAnsiColors = properties.getProperty(DefaultPropertyKeys.USE_ANSI_COLORS_KEY, "false").equalsIgnoreCase("true");
         LogLevel minLogLevel = LogLevel.of(properties.getProperty(DefaultPropertyKeys.MIN_LOG_LEVEL_KEY, "" + StandardLogLevel.DEBUG.getLevel()));
+        SimpleDateFormat dateFormat = new SimpleDateFormat(properties.getProperty(DefaultPropertyKeys.DATE_TIME_FORMAT, DEFAULT_DATE_FORMAT));
 
         Matcher matcher = LOG_TO_STREAM_PATTERN.matcher(logTo);
 
@@ -70,7 +72,7 @@ public class StreamTextLogger implements Logger {
                     throw new IllegalArgumentException("Variable '" + qualifiedClassName + "." + varName + "' is no subclass of OutputStream.");
 
 
-                return new StreamTextLogger((OutputStream) field.get(null), minLogLevel, false, autoFlush, useAnsiColors);
+                return new StreamTextLogger((OutputStream) field.get(null), minLogLevel, false, autoFlush, useAnsiColors, dateFormat);
 
             } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
                 throw new IllegalArgumentException("Cannot create OutputStream logger with stream in '" + qualifiedClassName + "." + varName + "'.", e);
@@ -84,7 +86,10 @@ public class StreamTextLogger implements Logger {
             if(parent != null && !Files.isDirectory(parent))
                 Files.createDirectories(parent);
 
-            return new StreamTextLogger(Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), minLogLevel, autoFlush, useAnsiColors);
+            return new StreamTextLogger(
+                    Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE),
+                    minLogLevel, autoFlush, useAnsiColors, dateFormat
+            );
         } catch (IOException e) {
             IllegalArgumentException ex = new IllegalArgumentException("StreamTextLogger: Cannot log to '" + path + "'.");
             //noinspection UnnecessaryInitCause
@@ -99,19 +104,21 @@ public class StreamTextLogger implements Logger {
      *
      * @param stream {@link OutputStream} to write to
      */
-    public StreamTextLogger(@NotNull OutputStream stream, @NotNull LogLevel minimumLogLevel, boolean autoFlush, boolean useAnsiColors) {
-        this(stream, minimumLogLevel, true, autoFlush, useAnsiColors);
+    public StreamTextLogger(@NotNull OutputStream stream, @NotNull LogLevel minimumLogLevel, boolean autoFlush, boolean useAnsiColors, @NotNull DateFormat dateFormat) {
+        this(stream, minimumLogLevel, true, autoFlush, useAnsiColors, dateFormat);
     }
 
     /**
      *
-     * @param stream {@link OutputStream} to write to
+     * @param stream          {@link OutputStream} to write to
      * @param minimumLogLevel The {@link Logger#setMinimumLogLevel(int)}
-     * @param wrap {@code true} to wrap the {@link OutputStream} in a {@link BufferedWriter}.
+     * @param wrap            {@code true} to wrap the {@link OutputStream} in a {@link BufferedWriter}.
+     * @param dateFormat      The date format to use during logging
      */
-    public StreamTextLogger(@NotNull OutputStream stream, @NotNull LogLevel minimumLogLevel, boolean wrap, boolean autoFlush, boolean useAnsiColors) {
+    public StreamTextLogger(@NotNull OutputStream stream, @NotNull LogLevel minimumLogLevel, boolean wrap, boolean autoFlush, boolean useAnsiColors, @NotNull DateFormat dateFormat) {
         this.useAnsiColors = useAnsiColors;
         this.autoFlush = autoFlush;
+        this.dateFormat = dateFormat;
         this.writer = wrap ? new BufferedWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8)) : new OutputStreamWriter(stream, StandardCharsets.UTF_8);
         this.minimumLogLevel = minimumLogLevel.getLevel();
     }

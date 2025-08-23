@@ -19,5 +19,5 @@ public class DefaultPropertyKeys {
     public static final String LOG_TO_KEY = "logTo";
     public static final String MIN_LOG_LEVEL_KEY = "minLogLevel";
     public static final String REDIRECT_JAVA_UTIL_LOGGING_TO_LLOG = "redirectJavaUtilLoggingToLLog";
-
+    public static final String DATE_TIME_FORMAT = "dateTimeFormat";
 }

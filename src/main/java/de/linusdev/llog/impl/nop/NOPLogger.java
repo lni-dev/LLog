@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2025 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.impl.nop;
@@ -46,5 +46,10 @@ public class NOPLogger implements Logger {
     @Override
     public void shutdown() throws Exception {
 
+    }
+
+    @Override
+    public @NotNull String info() {
+        return "NOPLogger: This logger does nothing!";
     }
 }

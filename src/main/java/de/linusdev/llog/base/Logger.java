@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2023 Linus Andera all rights reserved
+ * Copyright (c) 2023-2025 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.base;
 
-import de.linusdev.llog.LLog;
-import de.linusdev.llog.impl.streamtext.StreamTextLogger;
 import de.linusdev.data.so.SOData;
+import de.linusdev.llog.LLog;
 import de.linusdev.llog.base.data.LogData;
 import de.linusdev.llog.base.impl.data.LogSOData;
 import de.linusdev.llog.base.impl.data.TextLogData;
+import de.linusdev.llog.impl.streamtext.StreamTextLogger;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -89,5 +89,10 @@ public interface Logger {
      */
     @ApiStatus.Internal
     void shutdown() throws Exception;
+
+    /**
+     * A string containing information about this logger (e.g. log destination, min log level, ...)
+     */
+    @NotNull String info();
 
 }

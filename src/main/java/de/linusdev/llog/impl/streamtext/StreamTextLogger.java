@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023-2024 Linus Andera all rights reserved
+ * Copyright (c) 2023-2025 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.impl.streamtext;
@@ -12,6 +12,7 @@ import de.linusdev.llog.base.impl.StandardLogLevel;
 import de.linusdev.llog.impl.DefaultPropertyKeys;
 import de.linusdev.llog.replacer.LLogStringReplacer;
 import de.linusdev.lutils.ansi.sgr.SGR;
+import de.linusdev.lutils.other.debug.DebugInfoStringBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -34,6 +35,7 @@ public class StreamTextLogger implements Logger {
     private final static @NotNull String DEFAULT_DATE_FORMAT = "dd.MM.yyyy HH:mm";
 
     private final @NotNull Writer writer;
+    private final @NotNull String logTo;
     private final boolean autoFlush;
     private final boolean useAnsiColors;
     private final @NotNull DateFormat dateFormat;
@@ -72,7 +74,15 @@ public class StreamTextLogger implements Logger {
                     throw new IllegalArgumentException("Variable '" + qualifiedClassName + "." + varName + "' is no subclass of OutputStream.");
 
 
-                return new StreamTextLogger((OutputStream) field.get(null), minLogLevel, false, autoFlush, useAnsiColors, dateFormat);
+                return new StreamTextLogger(
+                        (OutputStream) field.get(null),
+                        minLogLevel,
+                        false,
+                        autoFlush,
+                        useAnsiColors,
+                        dateFormat,
+                        field.getDeclaringClass().getCanonicalName() + "." + field.getName()
+                );
 
             } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
                 throw new IllegalArgumentException("Cannot create OutputStream logger with stream in '" + qualifiedClassName + "." + varName + "'.", e);
@@ -88,7 +98,11 @@ public class StreamTextLogger implements Logger {
 
             return new StreamTextLogger(
                     Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE),
-                    minLogLevel, autoFlush, useAnsiColors, dateFormat
+                    minLogLevel,
+                    autoFlush,
+                    useAnsiColors,
+                    dateFormat,
+                    path.toAbsolutePath().toString()
             );
         } catch (IOException e) {
             IllegalArgumentException ex = new IllegalArgumentException("StreamTextLogger: Cannot log to '" + path + "'.");
@@ -104,8 +118,15 @@ public class StreamTextLogger implements Logger {
      *
      * @param stream {@link OutputStream} to write to
      */
-    public StreamTextLogger(@NotNull OutputStream stream, @NotNull LogLevel minimumLogLevel, boolean autoFlush, boolean useAnsiColors, @NotNull DateFormat dateFormat) {
-        this(stream, minimumLogLevel, true, autoFlush, useAnsiColors, dateFormat);
+    public StreamTextLogger(
+            @NotNull OutputStream stream,
+            @NotNull LogLevel minimumLogLevel,
+            boolean autoFlush,
+            boolean useAnsiColors,
+            @NotNull DateFormat dateFormat,
+            @NotNull String logTo
+    ) {
+        this(stream, minimumLogLevel, true, autoFlush, useAnsiColors, dateFormat, logTo);
     }
 
     /**
@@ -115,7 +136,16 @@ public class StreamTextLogger implements Logger {
      * @param wrap            {@code true} to wrap the {@link OutputStream} in a {@link BufferedWriter}.
      * @param dateFormat      The date format to use during logging
      */
-    public StreamTextLogger(@NotNull OutputStream stream, @NotNull LogLevel minimumLogLevel, boolean wrap, boolean autoFlush, boolean useAnsiColors, @NotNull DateFormat dateFormat) {
+    public StreamTextLogger(
+            @NotNull OutputStream stream,
+            @NotNull LogLevel minimumLogLevel,
+            boolean wrap,
+            boolean autoFlush,
+            boolean useAnsiColors,
+            @NotNull DateFormat dateFormat,
+            @NotNull String logTo
+    ) {
+        this.logTo = logTo;
         this.useAnsiColors = useAnsiColors;
         this.autoFlush = autoFlush;
         this.dateFormat = dateFormat;
@@ -178,5 +208,15 @@ public class StreamTextLogger implements Logger {
     @Override
     public void shutdown() throws IOException {
         writer.close();
+    }
+
+    @Override
+    public @NotNull String info() {
+        return new DebugInfoStringBuilder(this, "StreamTextLogger", 10)
+                .addInformation("logging to", logTo)
+                .addInformation("auto flush", autoFlush)
+                .addInformation("use ansi colors", useAnsiColors)
+                .addInformation("minimum log level", minimumLogLevel)
+                .build();
     }
 }

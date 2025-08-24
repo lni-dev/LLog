@@ -93,4 +93,10 @@ public class LocalhostLoggerImpl implements Logger {
             requestHandler.shutdown();
         websocket.shutdown();
     }
+
+    @Override
+    public @NotNull String info() {
+        // TODO
+        return "";
+    }
 }

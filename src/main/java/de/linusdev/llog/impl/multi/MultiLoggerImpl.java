@@ -11,6 +11,7 @@ import de.linusdev.llog.base.Logger;
 import de.linusdev.llog.base.data.LogData;
 import de.linusdev.llog.replacer.LLogStringReplacer;
 import de.linusdev.lutils.collections.llist.LLinkedList;
+import de.linusdev.lutils.other.debug.DebugInfoStringBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +22,7 @@ import java.util.Properties;
 import static de.linusdev.llog.impl.DefaultPropertyKeys.LOGGER_KEY;
 
 
+@SuppressWarnings("CallToPrintStackTrace")
 public class MultiLoggerImpl implements Logger {
 
     public static final String SUB_LOGGER_KEY_PREFIX = "sub-logger-";
@@ -113,5 +115,12 @@ public class MultiLoggerImpl implements Logger {
         for (Logger logger : loggers) {
             logger.shutdown();
         }
+    }
+
+    @Override
+    public @NotNull String info() {
+        return new DebugInfoStringBuilder(this, "MultiLogger", 10)
+                .addList("loggers", loggers.stream().map(Logger::info).toList())
+                .build();
     }
 }

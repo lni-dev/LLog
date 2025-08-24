@@ -17,7 +17,7 @@ public interface LogLevel {
 
     int ERROR_NUMERICAL_LOG_LEVEL = 100;
     int DEBUG_NUMERICAL_LOG_LEVEL = 0;
-    int DEBUG_LOW_NUMERICAL_LOG_LEVEL = 0;
+    int DEBUG_LOW_NUMERICAL_LOG_LEVEL = -5;
     int PRIVATE_DATA_NUMERICAL_LOG_LEVEL = -100;
 
     @ApiStatus.Internal

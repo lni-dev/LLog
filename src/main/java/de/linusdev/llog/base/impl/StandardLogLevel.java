@@ -80,7 +80,7 @@ public enum StandardLogLevel implements LogLevel {
 
     public static @NotNull StandardLogLevel ofName(@NotNull String name) {
         for (StandardLogLevel value : values()) {
-            if(value.getName().equals(name))
+            if(value.getName().equalsIgnoreCase(name))
                 return value;
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023-2024 Linus Andera all rights reserved
+ * Copyright (c) 2023-2025 Linus Andera all rights reserved
  */
 
 package de.linusdev.llog.base;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
-public interface LogInstance extends LogSource {
+public interface LogInstance extends LogSource, de.linusdev.lutils.other.log.Logger {
 
     /**
      * log given {@link LogData} on given {@link LogLevel}
@@ -140,6 +140,11 @@ public interface LogInstance extends LogSource {
      */
     default void throwable(@Nullable String message, @NotNull Throwable throwable) {
         log(StandardLogLevel.ERROR, new ThrowableLogData(message, throwable));
+    }
+
+    @Override
+    default void error(@Nullable String message, @NotNull Throwable throwable) {
+        throwable(message, throwable);
     }
 
     /**

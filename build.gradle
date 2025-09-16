@@ -48,6 +48,7 @@ repositories {
 dependencies {
     api 'de.linusdev:data:2.3.0'
     api 'org.jetbrains:annotations:24.0.1'
+    api 'de.linusdev:lutils:2.1.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
